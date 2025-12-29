@@ -2,6 +2,7 @@ package de.byteandbit;
 
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import de.byteandbit.gui.Gui;
+
 import javax.swing.*;
 
 public class Installer {

@@ -1,4 +1,5 @@
 package de.byteandbit.gui.screens;
+
 import de.byteandbit.Constants;
 import de.byteandbit.Util;
 import de.byteandbit.api.ProductApi;
@@ -57,20 +58,20 @@ public class DownloadAndInstallScreen implements Screen {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        
+
         majorStatusLabel = new JLabel("");
         majorStatusLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         majorStatusLabel.setFont(majorStatusLabel.getFont().deriveFont(Font.BOLD, 16f));
-        
+
         minorStatusLabel = new JLabel("");
         minorStatusLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        
+
         panel.add(Box.createRigidArea(new Dimension(0, 20)));
         panel.add(majorStatusLabel);
         panel.add(Box.createRigidArea(new Dimension(0, 10)));
         panel.add(minorStatusLabel);
         panel.add(Box.createVerticalGlue());
-        
+
         return panel;
     }
 
@@ -82,6 +83,7 @@ public class DownloadAndInstallScreen implements Screen {
     public void setMajorStatus(String status) {
         SwingUtilities.invokeLater(() -> majorStatusLabel.setText(status));
     }
+
     public void setMinorStatus(String status) {
         SwingUtilities.invokeLater(() -> minorStatusLabel.setText(status));
     }
@@ -115,7 +117,7 @@ public class DownloadAndInstallScreen implements Screen {
                 setMinorStatus(uiText("CHECKING_FOR_OLD_VERSIONS"));
                 for (File f : Objects.requireNonNull(folder.listFiles())) {
                     if (f.getName().equals(downloaded.getName())) continue;
-                    if (getCoreName(f.getName()).equals(coreName)){
+                    if (getCoreName(f.getName()).equals(coreName)) {
                         setMajorStatus(uiText("CLEANUP_OLD_VERSIONS"));
                         setMinorStatus(String.format(uiText("REMOVING_OLD_VERSIONS"), f.getName()));
                         ui_wait();

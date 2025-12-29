@@ -44,7 +44,6 @@ public class ProductApi {
     }
 
 
-
     public List<String> getAvailableScopes() {
         return this.license.getScope();
     }
@@ -64,12 +63,12 @@ public class ProductApi {
     private License fetchLicense(String licenseKey) throws IOException {
         return getJsonResponse(String.format(Constants.LICENSE_CHECK_URL, licenseKey), License.class, objectMapper);
     }
+
     public String getLicenseDownloadUrl() {
-        if(this.license == null) return null;
-        String url = String.format(Constants.LICENSE_DOWNLOAD_URL,this.license.getKey(), this.license.getId());
+        if (this.license == null) return null;
+        String url = String.format(Constants.LICENSE_DOWNLOAD_URL, this.license.getKey(), this.license.getId());
         return url;
     }
-
 
 
     public boolean setLicense(String licenseKey) {

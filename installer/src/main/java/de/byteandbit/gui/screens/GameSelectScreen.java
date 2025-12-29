@@ -212,11 +212,11 @@ public class GameSelectScreen implements Screen {
                 boolean canInstall = ProductApi.getInstance().canInstallFor(instance, selectedScope);
 
                 if (canInstall) {
-                    if(instance.isForge()){
+                    if (instance.isForge()) {
                         label.setEnabled(true);
                         label.setForeground(list.getForeground());
                         label.setToolTipText(null);
-                    } else{
+                    } else {
                         label.setEnabled(false);
                         label.setForeground(Color.GRAY);
                         label.setToolTipText(uiText("FORGE_REQUIRED"));

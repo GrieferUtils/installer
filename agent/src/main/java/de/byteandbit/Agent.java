@@ -20,7 +20,7 @@ public class Agent {
         String[] args = agentArgs.split(" ");
         int pid = Integer.parseInt(args[0]);
         int port = Integer.parseInt(args[1]);
-        if(isMinecraft()) {
+        if (isMinecraft()) {
             GameInstance instance = new GameInstance(pid, gameDir(), mcVersion(), isForge());
             post(port, instance);
         }
@@ -34,7 +34,8 @@ public class Agent {
                     return node.get("id").asText().replaceAll("-.*", "");
                 }
             }
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
         return "unknown";
     }
 
@@ -48,7 +49,8 @@ public class Agent {
             Class.forName("net.minecraftforge.fml.common.Loader", false,
                     ClassLoader.getSystemClassLoader());
             return true;
-        } catch (ClassNotFoundException ignored) {}
+        } catch (ClassNotFoundException ignored) {
+        }
         return false;
     }
 

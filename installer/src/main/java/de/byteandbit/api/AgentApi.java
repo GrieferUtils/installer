@@ -1,7 +1,6 @@
 package de.byteandbit.api;
 
-import de.byteandbit.Constants;
-import de.byteandbit.Util;
+import com.sun.tools.attach.*;
 import de.byteandbit.data.GameInstance;
 import io.javalin.Javalin;
 import lombok.Getter;
@@ -11,11 +10,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import com.sun.tools.attach.*;
-
 
 import static de.byteandbit.Constants.AGENT;
-import static de.byteandbit.Util.downloadUnzippedTempFile;
 import static de.byteandbit.Util.extractResourceToTempFile;
 
 /**
@@ -28,6 +24,7 @@ public class AgentApi implements AutoCloseable {
     private final List<GameInstance> gameInstances = new ArrayList<>();
     private Javalin agentCommunicationServer;
     private int port;
+
     public AgentApi(int port) throws IOException {
         this.port = port;
         start_agent_communication();

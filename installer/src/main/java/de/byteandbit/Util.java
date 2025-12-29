@@ -237,7 +237,8 @@ public class Util {
     public enum OS {
         WINDOWS, LINUX, MACOS, OTHER
     }
-    public static byte[] readAllBytes(InputStream is){
+
+    public static byte[] readAllBytes(InputStream is) {
         try {
             ByteArrayOutputStream buffer = new ByteArrayOutputStream();
             int nRead;
