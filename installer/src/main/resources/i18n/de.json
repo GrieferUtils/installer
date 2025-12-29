@@ -1,7 +1,7 @@
 {
   "CHECKING_INTERNET_CONNECTION": "Internetverbindung wird geprüft...",
   "DOWNLOADING_TRANSLATIONS": "Übersetzungen werden heruntergeladen...",
-  "DOWNLOADING_DEPENDENCIES": "Abhängigkeiten werden heruntergeladen...",
+  "SETUP_DEPENDENCIES": "Stelle abhängigkeiten bereit...",
   "SETUP_COMPLETE": "Installation abgeschlossen",
   "SELECT_GAME_INSTANCE": "Wo möchtest du %s installieren?",
   "INSTALL": "Hier installieren",

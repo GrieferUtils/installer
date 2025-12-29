@@ -237,4 +237,19 @@ public class Util {
     public enum OS {
         WINDOWS, LINUX, MACOS, OTHER
     }
+    public static byte[] readAllBytes(InputStream is){
+        try {
+            ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+            int nRead;
+            byte[] data = new byte[16384];
+            while ((nRead = is.read(data, 0, data.length)) != -1) {
+                buffer.write(data, 0, nRead);
+            }
+            buffer.flush();
+            return buffer.toByteArray();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return new byte[0];
+        }
+    }
 }

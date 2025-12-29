@@ -1,7 +1,7 @@
 {
   "CHECKING_INTERNET_CONNECTION": "Checking internet connection...",
   "DOWNLOADING_TRANSLATIONS": "Downloading translations...",
-  "DOWNLOADING_DEPENDENCIES": "Downloading dependencies...",
+  "SETUP_DEPENDENCIES": "Getting things ready...",
   "SETUP_COMPLETE": "Setup complete",
   "SELECT_GAME_INSTANCE": "Where would you like to install %s?",
   "INSTALL": "Install here",

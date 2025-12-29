@@ -25,10 +25,6 @@ public class Constants {
     public static final String PRODUCT_DOWNLOAD_URL = "https://lion-service.byteandbit.cloud/microservice/lionService/api/version/download/%s/%s/%s/latest-%s"; // key + product key + version + scope
     public static final String LICENSE_DOWNLOAD_URL = "https://lion-service.byteandbit.cloud/microservice/lionService/api/license/download/%s/%s"; // key + userId
 
-    public static final String JATTACH_MACOS = "https://github.com/jattach/jattach/releases/download/v2.2/jattach-macos.zip";
-    public static final String JATTACH_LINUX = "https://github.com/jattach/jattach/releases/download/v2.2/jattach-linux-x64.tgz";
-    public static final String JATTACH_WINDOWS = "https://github.com/jattach/jattach/releases/download/v2.2/jattach-windows.zip";
-
     public static final int UI_ARTIFICIAL_DELAY_MS = 500;
 
     public static final String LEGACY_SPINOSAURUS_IDENTIFIER = "legacy_spinosaurus"; // identifier to legacy spino, which is not supported

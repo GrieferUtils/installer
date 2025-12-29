@@ -11,6 +11,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import com.sun.tools.attach.*;
+
 
 import static de.byteandbit.Constants.AGENT;
 import static de.byteandbit.Util.downloadUnzippedTempFile;
@@ -20,7 +22,6 @@ import static de.byteandbit.Util.extractResourceToTempFile;
  * Api responsible for finding running minecraft instances and extracting their metadata.
  **/
 public class AgentApi implements AutoCloseable {
-    private static File jattach;
     private static File agent;
     private final HashSet<Integer> attachedPids = new HashSet<>();
     @Getter
@@ -33,23 +34,9 @@ public class AgentApi implements AutoCloseable {
     }
 
     public static void init() throws IOException {
-        jattach = download_jattach();
-        jattach.setExecutable(true);
         agent = unzip_agent();
     }
 
-    private static File download_jattach() throws IOException {
-        switch (Util.getOS()) {
-            case WINDOWS:
-                return downloadUnzippedTempFile(Constants.JATTACH_WINDOWS);
-            case LINUX:
-                return downloadUnzippedTempFile(Constants.JATTACH_LINUX);
-            case MACOS:
-                return downloadUnzippedTempFile(Constants.JATTACH_MACOS);
-            default:
-                return null;
-        }
-    }
 
     private static File unzip_agent() throws IOException {
         return extractResourceToTempFile(AGENT);
@@ -70,18 +57,21 @@ public class AgentApi implements AutoCloseable {
 
 
     private void attach(int pid) throws IOException, InterruptedException {
-        String args = pid + " " + port;
-        ProcessBuilder pb = new ProcessBuilder(
-                jattach.getAbsolutePath(),
-                String.valueOf(pid),
-                "load",
-                "instrument",
-                "true",
-                agent.getAbsolutePath() + "=" + args
-        );
-        Process p = pb.start();
-        p.waitFor();
+        String agentArgs = pid + " " + port;
+        String agentPath = agent.getAbsolutePath();
+        VirtualMachine vm = null;
+        try {
+            vm = VirtualMachine.attach(String.valueOf(pid));
+            vm.loadAgent(agentPath, agentArgs);
 
+            System.out.println("Agent loaded into JVM with PID " + pid);
+        } catch (AttachNotSupportedException | AgentLoadException | AgentInitializationException e) {
+            throw new IOException("Cannot attach to target JVM with PID " + pid, e);
+        } finally {
+            if (vm != null) {
+                vm.detach();
+            }
+        }
     }
 
     private void start_agent_communication() {
@@ -101,62 +91,22 @@ public class AgentApi implements AutoCloseable {
 
 
     private ArrayList<Integer> list_jvm_pids() {
+        ArrayList<Integer> pids = new ArrayList<>();
         try {
-            ProcessBuilder pb;
-            switch (Util.getOS()) {
-                case WINDOWS:
-                    pb = new ProcessBuilder("tasklist", "/FO", "CSV", "/NH");
-                    break;
-                case LINUX:
-                case MACOS:
-                    pb = new ProcessBuilder("ps", "aux");
-                    break;
-                default:
-                    return new ArrayList<>();
-            }
-
-            pb.redirectErrorStream(true);
-            Process process = pb.start();
-
-            java.io.BufferedReader reader = new java.io.BufferedReader(
-                    new java.io.InputStreamReader(process.getInputStream()));
-
-            ArrayList<Integer> pids = new java.util.ArrayList<>();
-            String line;
-
-            if (Util.getOS() == Util.OS.WINDOWS) {
-                // Windows tasklist CSV format: "java.exe","1234","Console","1","12,345 K"
-                while ((line = reader.readLine()) != null) {
-                    if (line.toLowerCase().contains("java.exe") || line.toLowerCase().contains("javaw.exe")) {
-                        String[] parts = line.split("\",\"");
-                        if (parts.length >= 2) {
-                            try {
-                                String pidStr = parts[1].replace("\"", "").trim();
-                                pids.add(Integer.parseInt(pidStr));
-                            } catch (NumberFormatException ignored) {
-                            }
-                        }
-                    }
-                }
-            } else {
-                // Unix ps aux format: columns are space-separated, PID is column 2
-                while ((line = reader.readLine()) != null) {
-                    if (line.contains("java") && !line.contains("ps aux")) {
-                        String[] parts = line.trim().split("\\s+");
-                        if (parts.length >= 2) {
-                            try {
-                                pids.add(Integer.parseInt(parts[1]));
-                            } catch (NumberFormatException ignored) {
-                            }
-                        }
-                    }
+            // List all JVMs visible to the Attach API
+            List<VirtualMachineDescriptor> vms = VirtualMachine.list();
+            for (VirtualMachineDescriptor vmd : vms) {
+                try {
+                    int pid = Integer.parseInt(vmd.id());
+                    pids.add(pid);
+                } catch (NumberFormatException ignored) {
+                    // Skip any non-numeric IDs (very rare)
                 }
             }
-            process.waitFor();
-            return pids;
-        } catch (IOException | InterruptedException e) {
-            return new ArrayList<>();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+        return pids;
     }
 
     /**

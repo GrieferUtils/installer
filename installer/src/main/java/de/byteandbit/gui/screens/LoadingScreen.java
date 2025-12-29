@@ -85,7 +85,7 @@ public class LoadingScreen implements Screen {
             } catch (IOException e) {
                 Gui.getInstance().errorAndExit(uiText("NO_TRANSLATIONS_ERROR"), e);
             }
-            updateStatus(uiText("DOWNLOADING_DEPENDENCIES"));
+            updateStatus(uiText("SETUP_DEPENDENCIES"));
             ui_wait();
             try {
                 AgentApi.init();
