@@ -1,0 +1,11 @@
+[
+  {
+    "name": "Velociraptor",
+    "icon": "https://example.com/velociraptor.png",
+    "versions": [
+      {"version": "1.0", "release_date": "2022-01-15", "download_url": "https://example.com/velociraptor-1.0.jar", "is_forgemod": true, "is_laby_addon": true, "labymod_required": true, "supported_game_versions":["1.8.*", "1.12.2"]},
+      {"version": "1.1", "release_date": "2022-06-30", "download_url": "https://example.com/velociraptor-1.1.jar", "is_forgemod": true, "is_laby_addon": true, "labymod_required": true, "supported_game_versions":["1.12.2", "1.16.5"]},
+      {"version": "2.0", "release_date": "2023-03-10", "download_url": "https://example.com/velociraptor-2.0.jar", "is_forgemod": true, "is_laby_addon": true, "labymod_required": true, "supported_game_versions":["1.16.5", "1.18.2"]}
+    ]
+  }
+]

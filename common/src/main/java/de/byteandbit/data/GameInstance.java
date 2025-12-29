@@ -1,0 +1,17 @@
+package de.byteandbit.data;
+
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+
+/**
+ * Data describing a running minecraft instance.
+ */
+@lombok.Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class GameInstance {
+    int pid;
+    String gameDir;
+    String mcVersion;
+    boolean isForge;
+}
