@@ -10,10 +10,10 @@ import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
 
 import static de.byteandbit.Constants.UI_ARTIFICIAL_DELAY_MS;
 
@@ -22,36 +22,6 @@ import static de.byteandbit.Constants.UI_ARTIFICIAL_DELAY_MS;
  */
 public class Util {
 
-    /**
-     * Downloads a zip file from the given URL and extracts the first file in it to a temporary file.
-     */
-    public static File downloadUnzippedTempFile(String url) throws IOException {
-        File zipFile = downloadTempFile(url);
-
-        File tempDir = Files.createTempDirectory("unzipped_").toFile();
-        tempDir.deleteOnExit();
-
-        try (ZipInputStream zis = new ZipInputStream(new FileInputStream(zipFile))) {
-            ZipEntry entry = zis.getNextEntry();
-            if (entry == null) {
-                throw new IOException("Zip file is empty");
-            }
-
-            File extractedFile = new File(tempDir, entry.getName());
-            extractedFile.deleteOnExit();
-
-            try (FileOutputStream fos = new FileOutputStream(extractedFile)) {
-                byte[] buffer = new byte[8192];
-                int bytesRead;
-                while ((bytesRead = zis.read(buffer)) != -1) {
-                    fos.write(buffer, 0, bytesRead);
-                }
-            }
-
-            zis.closeEntry();
-            return extractedFile;
-        }
-    }
 
     /**
      * Extracts a resource file from the JAR to a temporary file.
@@ -92,50 +62,11 @@ public class Util {
             throw e;
         }
     }
-
-    /**
-     * Downloads a file from the given URL to a temporary file.
-     */
-    public static File downloadTempFile(String url) throws IOException {
-        String extension = "";
-        int lastDot = url.lastIndexOf('.');
-        int lastSlash = url.lastIndexOf('/');
-        if (lastDot > lastSlash && lastDot != -1) {
-            extension = url.substring(lastDot);
-        }
-
-        File tempFile = Files.createTempFile("download_", extension).toFile();
-        tempFile.deleteOnExit();
-        downloadFile(url, tempFile);
-        return tempFile;
-    }
-
-    /**
-     * Downloads a file from the given URL to the given file.
-     */
-    public static void downloadFile(String url, File file) throws IOException {
-        URL downloadUrl = new URL(url);
-        HttpURLConnection connection = (HttpURLConnection) downloadUrl.openConnection();
-        connection.setRequestMethod("GET");
-        connection.setConnectTimeout(10000);
-        connection.setReadTimeout(10000);
-
-        try (InputStream in = connection.getInputStream(); FileOutputStream out = new FileOutputStream(file)) {
-
-            byte[] buffer = new byte[8192];
-            int bytesRead;
-            while ((bytesRead = in.read(buffer)) != -1) {
-                out.write(buffer, 0, bytesRead);
-            }
-        }
-        connection.disconnect();
-    }
-
     /**
      * Downloads a file from the given URL to the specified folder.
      * The filename is derived from the URL.
      */
-    public static File downloadFileToFolder(String url, File folder) throws IOException {
+    public static File downloadFileToFolder(String url, File folder, Consumer<Integer> progressCallback) throws IOException {
         if (!folder.exists() || !folder.isDirectory()) {
             throw new IOException("Invalid folder: " + folder.getAbsolutePath());
         }
@@ -172,37 +103,32 @@ public class Util {
             filename = Paths.get(path).getFileName().toString();
         }
 
-        if (filename == null || filename.isEmpty()) {
+        if (filename.isEmpty()) {
             throw new IOException("Could not determine filename");
         }
 
         File destination = new File(folder, filename);
-
+        System.out.println("Downloading " + url + " to " + destination.getAbsolutePath());
         // --- Download ---
         try (InputStream in = conn.getInputStream();
-             OutputStream out = new BufferedOutputStream(Files.newOutputStream(destination.toPath()))) {
-
+             OutputStream out = new BufferedOutputStream(
+                     Files.newOutputStream(destination.toPath()))) {
+            long totalLength = conn.getContentLengthLong(); // -1 if unknown
+            long bytesReadSoFar = 0;
             byte[] buffer = new byte[8192];
             int read;
             while ((read = in.read(buffer)) != -1) {
                 out.write(buffer, 0, read);
+                bytesReadSoFar += read;
+                long finalBytesReadSoFar = bytesReadSoFar;
+                if (progressCallback != null && totalLength > 0) {
+                    int percent = (int) ((finalBytesReadSoFar * 100) / totalLength);
+                    progressCallback.accept(percent);
+                }
             }
         }
 
         return destination;
-    }
-
-    public static OS getOS() {
-        String osName = System.getProperty("os.name").toLowerCase();
-        if (osName.contains("win")) {
-            return OS.WINDOWS;
-        } else if (osName.contains("mac") || osName.contains("darwin")) {
-            return OS.MACOS;
-        } else if (osName.contains("nux") || osName.contains("nix") || osName.contains("aix")) {
-            return OS.LINUX;
-        } else {
-            return OS.OTHER;
-        }
     }
 
     public static void ui_wait() {
@@ -234,8 +160,20 @@ public class Util {
     public static String uiText(String key) {
         return TranslationApi.getInstance().get(key);
     }
+    public static <T> Consumer<T> uiThrottle(Consumer<T> delegate) {
+        return throttle(delegate, 300);
+    }
+    public static <T> Consumer<T> throttle(Consumer<T> delegate, long intervalMillis) {
+        AtomicLong lastRun = new AtomicLong(0);
 
-    public enum OS {
-        WINDOWS, LINUX, MACOS, OTHER
+        return value -> {
+            long now = System.currentTimeMillis();
+            long last = lastRun.get();
+
+            if (now - last >= intervalMillis &&
+                    lastRun.compareAndSet(last, now)) {
+                delegate.accept(value);
+            }
+        };
     }
 }

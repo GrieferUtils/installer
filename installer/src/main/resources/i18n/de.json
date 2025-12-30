@@ -26,7 +26,6 @@
   "DOWNLOADING_ADDON": "%s wird heruntergeladen...",
   "CHECKING_FOR_OLD_VERSIONS": "Suche nach alten Versionen...",
   "CLEANUP_OLD_VERSIONS": "Alte Versionen werden bereinigt...",
-  "REMOVING_OLD_VERSIONS": "Alte Version wird entfernt: %s",
   "INSTALLATION_COMPLETE": "Installation abgeschlossen!",
   "RESTART_GAME": "Bitte starte das Spiel neu. Du kannst dieses Fenster jetzt schließen.",
   "FORGE_REQUIRED": "Diese Instanz hat kein Forge installiert.",

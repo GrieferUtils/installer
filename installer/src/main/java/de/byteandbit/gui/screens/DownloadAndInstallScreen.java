@@ -2,6 +2,7 @@ package de.byteandbit.gui.screens;
 
 import de.byteandbit.Constants;
 import de.byteandbit.Util;
+import de.byteandbit.api.AgentApi;
 import de.byteandbit.api.ProductApi;
 import de.byteandbit.data.GameInstance;
 import de.byteandbit.gui.Gui;
@@ -12,6 +13,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Objects;
 
 import static de.byteandbit.Util.uiText;
@@ -103,28 +105,46 @@ public class DownloadAndInstallScreen implements Screen {
     public void onOpen() {
         new Thread(() -> {
             try {
-                setMajorStatus(uiText("INSTALLATION_IN_PROGRESS"));
+                setMajorStatus(String.format(uiText("DOWNLOADING_ADDON"), ProductApi.getInstance().getProductName()));
                 setMinorStatus(uiText("GETTING_DOWNLOAD_LINK"));
                 ui_wait();
                 ProductApi.DownloadResponse downloadResponse = ProductApi.getInstance().getDownloadLink(selectedInstance, selecteScope);
-                setMinorStatus(String.format(uiText("DOWNLOADING_ADDON"), ProductApi.getInstance().getProductName()));
+                File modsFolder = new File(selectedInstance.getGameDir(), "mods");
+                File downloaded = Util.downloadFileToFolder(downloadResponse.link, modsFolder, Util.uiThrottle((percent) -> {
+                    setMinorStatus(percent + "%");
+                }));
                 ui_wait();
-                File folder = new File(selectedInstance.getGameDir(), "mods");
-                File downloaded = Util.downloadFileToFolder(downloadResponse.link, folder);
+
                 String coreName = getCoreName(downloaded.getName());
-                setMinorStatus(uiText("DOWNLOADING_LICENSE"));
+                setMajorStatus(uiText("DOWNLOADING_LICENSE"));
+                setMinorStatus("0%");
                 ui_wait();
-                Util.downloadFileToFolder(ProductApi.getInstance().getLicenseDownloadUrl(), folder);
-                setMinorStatus(uiText("CHECKING_FOR_OLD_VERSIONS"));
-                for (File f : Objects.requireNonNull(folder.listFiles())) {
+                File configFolder = new File(selectedInstance.getGameDir(), "config");
+                Util.downloadFileToFolder(ProductApi.getInstance().getLicenseDownloadUrl(), configFolder, Util.uiThrottle((percent)->{
+                    setMinorStatus(percent + "%");
+                }));
+
+                setMajorStatus(uiText("CHECKING_FOR_OLD_VERSIONS"));
+                setMinorStatus("");
+                ArrayList<String> toRemove = new ArrayList<>();
+
+                for (File f : Objects.requireNonNull(modsFolder.listFiles())) {
                     if (f.getName().equals(downloaded.getName())) continue;
                     if (getCoreName(f.getName()).equals(coreName)) {
-                        setMajorStatus(uiText("CLEANUP_OLD_VERSIONS"));
-                        setMinorStatus(String.format(uiText("REMOVING_OLD_VERSIONS"), f.getName()));
+                        toRemove.add(f.getAbsolutePath());
+                        setMinorStatus(String.format(uiText("FOUND_OLD_VERSION"), f.getName()));
                         ui_wait();
                         ui_wait();
-                        f.delete();
                     }
+                }
+                if(!toRemove.isEmpty()){
+                    // add to shutdown remove hook
+                    setMinorStatus("");
+                    setMajorStatus(uiText("CLEANUP_OLD_VERSIONS"));
+                    ui_wait();
+                    try{
+                        AgentApi.attach_addFileDeleteHooks(selectedInstance.getPid(), toRemove);
+                    }catch (Exception ignored){} // this will always report that it didnt manage to attach
                 }
                 setMajorStatus(uiText("INSTALLATION_COMPLETE"));
                 setMinorStatus(uiText("RESTART_GAME"));

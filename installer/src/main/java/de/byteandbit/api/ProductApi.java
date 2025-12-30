@@ -67,8 +67,7 @@ public class ProductApi {
 
     public String getLicenseDownloadUrl() {
         if (this.license == null) return null;
-        String url = String.format(Constants.LICENSE_DOWNLOAD_URL, this.license.getKey(), this.license.getId());
-        return url;
+        return String.format(Constants.LICENSE_DOWNLOAD_URL, this.license.getKey(), this.license.getOwner().getLink());
     }
 
 

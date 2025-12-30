@@ -2,6 +2,7 @@ package de.byteandbit.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.tools.attach.*;
+import de.byteandbit.data.CommonConstants;
 import de.byteandbit.data.GameInstance;
 import lombok.Getter;
 
@@ -48,7 +49,7 @@ public class AgentApi implements AutoCloseable {
         for (int pid : list_jvm_pids()) {
             if (!attachedPids.contains(pid)) {
                 try {
-                    attach(pid);
+                    attach_testMC(pid);
                 } catch (IOException | InterruptedException ignored) {
                 } finally {
                     attachedPids.add(pid);
@@ -58,14 +59,23 @@ public class AgentApi implements AutoCloseable {
     }
 
 
-    private void attach(int pid) throws IOException, InterruptedException {
-        String agentArgs = pid + " " + port;
+    private void attach_testMC(int pid) throws IOException, InterruptedException {
+        String agentArgs = CommonConstants.TEST_MC_KEY + CommonConstants.DELIMITER + pid + CommonConstants.DELIMITER + port;
+        attach(pid, agentArgs);
+    }
+
+    public static void attach_addFileDeleteHooks(int pid, ArrayList<String> filePaths) throws IOException, InterruptedException {
+        System.out.println("Attaching delete hooks for files: " + String.join(", ", filePaths));
+        attach(pid, CommonConstants.DELETE_FILES_KEY + CommonConstants.DELIMITER + String.join(CommonConstants.DELIMITER, filePaths));
+    }
+
+
+    private static void attach(int pid, String agentArgs) throws IOException, InterruptedException {
         String agentPath = agent.getAbsolutePath();
         VirtualMachine vm = null;
         try {
             vm = VirtualMachine.attach(String.valueOf(pid));
             vm.loadAgent(agentPath, agentArgs);
-
             System.out.println("Agent loaded into JVM with PID " + pid);
         } catch (AttachNotSupportedException | AgentLoadException | AgentInitializationException e) {
             throw new IOException("Cannot attach to target JVM with PID " + pid, e);
@@ -75,6 +85,7 @@ public class AgentApi implements AutoCloseable {
             }
         }
     }
+
 
     private void start_agent_communication() {
         new Thread(() -> {
