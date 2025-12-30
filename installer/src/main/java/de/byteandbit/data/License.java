@@ -6,6 +6,7 @@ import lombok.Data;
 
 import java.time.Instant;
 import java.util.List;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Data
 public class License {
@@ -21,6 +22,7 @@ public class License {
     private List<Feature> features;
     private List<User> users;
     private boolean dodoguard;
+
     @JsonIgnoreProperties(ignoreUnknown = true)
     @Data
     public static class Owner {
@@ -28,12 +30,14 @@ public class License {
         private String link;
         private String username;
     }
+
     @JsonIgnoreProperties(ignoreUnknown = true)
     @Data
     public static class UpdateStatus {
         private boolean limited;
         private Instant validUntil;
         private List<AppliedCode> appliedCodes;
+
         @JsonIgnoreProperties(ignoreUnknown = true)
         @Data
         public static class AppliedCode {
@@ -44,17 +48,20 @@ public class License {
             private int amount;
         }
     }
+
     @JsonIgnoreProperties(ignoreUnknown = true)
     @Data
     public static class Product {
         private Identifier identifier;
         private List<Capability> capabilities;
+
         @JsonIgnoreProperties(ignoreUnknown = true)
         @Data
         public static class Identifier {
             private String key;
             private String translationKey;
         }
+
         @JsonIgnoreProperties(ignoreUnknown = true)
         @Data
         public static class Capability {
@@ -62,11 +69,13 @@ public class License {
             private int amount;
         }
     }
+
     @JsonIgnoreProperties(ignoreUnknown = true)
     @Data
     public static class CreationData {
         private Instant timestamp;
         private CreatedBy createdBy;
+
         @JsonIgnoreProperties(ignoreUnknown = true)
         @Data
         public static class CreatedBy {
@@ -74,6 +83,7 @@ public class License {
             private String type;
         }
     }
+
     @JsonIgnoreProperties(ignoreUnknown = true)
     @Data
     public static class Feature {
@@ -81,6 +91,7 @@ public class License {
         private String link;
         private Identifier identifier;
         private List<Product.Capability> capabilities;
+
         @JsonIgnoreProperties(ignoreUnknown = true)
         @Data
         public static class Identifier {
@@ -88,6 +99,7 @@ public class License {
             private String translationKey;
         }
     }
+
     @JsonIgnoreProperties(ignoreUnknown = true)
     @Data
     public static class User {

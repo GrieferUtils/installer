@@ -28,4 +28,7 @@ public class Constants {
     public static final int UI_ARTIFICIAL_DELAY_MS = 500;
 
     public static final String LEGACY_SPINOSAURUS_IDENTIFIER = "legacy_spinosaurus"; // identifier to legacy spino, which is not supported
+    public static final String LICENSE_PREFIX = "LION-";
+    public static final int MAX_LICENSE_LENGTH = 30;
+
 }

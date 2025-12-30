@@ -1,5 +1,6 @@
 package de.byteandbit.gui.screens;
 
+import de.byteandbit.Constants;
 import de.byteandbit.api.ProductApi;
 import de.byteandbit.gui.Gui;
 
@@ -20,7 +21,8 @@ public class LicenseScreen implements Screen {
     private JPanel panel;
     private JTextField licenseField;
     private JButton verifyButton;
-    private static final String license_prefix="LION-";
+    private static final String license_prefix = Constants.LICENSE_PREFIX;
+    private static final int MAX_LENGTH = Constants.MAX_LICENSE_LENGTH;
 
     @Override
     public JPanel getScreen() {
@@ -115,69 +117,39 @@ public class LicenseScreen implements Screen {
      * Sanitize the license input field to start with license_prefix and truncate to MAX_LENGTH.
      */
     private static class LicenseDocument extends PlainDocument {
-        private static final int MAX_LENGTH = 35;
+        public LicenseDocument() {
+            super();
+        }
 
         @Override
         public void insertString(int offset, String str, AttributeSet attr)
                 throws BadLocationException {
-            if (str == null || str.isEmpty()) {
-                return;
-            }
-
-            String current = getText(0, getLength());
-            String combined;
-
-            if (current.isEmpty()) {
-                if (!str.startsWith(license_prefix)) {
-                    str = license_prefix + str;
-                }
-                combined = str;
-            } else {
-                combined = new StringBuilder(current).insert(offset, str).toString();
-                if (!combined.startsWith(license_prefix)) {
-                    return;
-                }
-            }
-
-            if (combined.length() > MAX_LENGTH) {
-                combined = combined.substring(0, MAX_LENGTH);
-            }
-
-            String formatted = format(combined);
-
-            super.remove(0, getLength());
-            super.insertString(0, formatted, attr);
+            String text = getText(0, getLength());
+            boolean has_prefix = text.startsWith(license_prefix);
+            str = format(str);
+            if (has_prefix && offset < license_prefix.length())
+                offset = license_prefix.length();
+            if (has_prefix && str.startsWith(license_prefix))
+                str = str.substring(license_prefix.length());
+            if (has_prefix && getLength() + str.length() > MAX_LENGTH)
+                str = str.substring(0, MAX_LENGTH - getLength());
+            super.insertString(offset, str, attr);
         }
 
+        // Ensure we never remove the prefix
         @Override
         public void remove(int offset, int length) throws BadLocationException {
-            String current = getText(0, getLength());
-
-            // Ensure we never remove the prefix
             if (offset < license_prefix.length()) {
-                if (offset + length <= license_prefix.length()) {
-                    return;
-                } else {
-                    length = offset + length - license_prefix.length();
-                    offset = license_prefix.length();
-                }
+                length -= (license_prefix.length() - offset);
+                offset = license_prefix.length();
             }
-
-            String combined = new StringBuilder(current)
-                    .delete(offset, offset + length)
-                    .toString();
-
-            String formatted = format(combined);
-
-            super.remove(0, getLength());
-            super.insertString(0, formatted, null);
+            if (length <= 0)
+                return;
+            super.remove(offset, length);
         }
 
         private String format(String s) {
-            if(s.startsWith(license_prefix + license_prefix)){
-                s = s.substring(license_prefix.length());
-            }
-            return s.toUpperCase().replaceAll("[^A-Z0-9-]", "");
+            return s.toUpperCase().replaceAll("[^A-Z0-9-]", "").trim();
         }
     }
 }
