@@ -1,5 +1,6 @@
 package de.byteandbit.gui.screens;
 
+import de.byteandbit.Constants;
 import de.byteandbit.api.AgentApi;
 import de.byteandbit.api.ProductApi;
 import de.byteandbit.data.GameInstance;
@@ -121,7 +122,7 @@ public class GameSelectScreen implements Screen {
             scheduler.scheduleAtFixedRate(() -> {
                 agentApi.scan_for_new_game_instances();
                 SwingUtilities.invokeLater(this::updateGameList);
-            }, 0, 5, TimeUnit.SECONDS);
+            }, 0, Constants.JVM_SEARCH_INTERVAL_MS, TimeUnit.MILLISECONDS);
             SwingUtilities.invokeLater(() -> {
                 titleLabel.setText(String.format(uiText("SELECT_GAME_INSTANCE"), ProductApi.getInstance().getProductName()));
             });
@@ -165,7 +166,6 @@ public class GameSelectScreen implements Screen {
         } else {
             statusLabel.setText(uiText("SCANNING_FOR_GAMES"));
         }
-
         gameList.repaint();
     }
 

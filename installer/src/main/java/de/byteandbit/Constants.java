@@ -12,7 +12,7 @@ public class Constants {
     public static final String PROGRAM_TITLE = "ByteAndBit-Installer";
 
     public static final int COMMUNICATION_PORT = 61320;
-
+    public static final int JVM_SEARCH_INTERVAL_MS = 1000;
     public static final Rectangle PROGRAM_GEOMETRY = new Rectangle(500, 300);
     public static final URL BAB_LOGO = Objects.requireNonNull(Constants.class.getClassLoader().getResource("bab_logo.png"));
     public static final URL BAB_ICON = Objects.requireNonNull(Constants.class.getClassLoader().getResource("bab_icon.png"));
