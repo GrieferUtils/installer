@@ -138,7 +138,6 @@ public class DownloadAndInstallScreen implements Screen {
                     }
                 }
                 if (!toRemove.isEmpty()) {
-                    // add to shutdown remove hook
                     setMinorStatus("");
                     setMajorStatus(uiText("CLEANUP_OLD_VERSIONS"));
                     ui_wait();

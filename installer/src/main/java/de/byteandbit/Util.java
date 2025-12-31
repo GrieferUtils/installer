@@ -18,7 +18,7 @@ import java.util.regex.Pattern;
 import static de.byteandbit.Constants.UI_ARTIFICIAL_DELAY_MS;
 
 /**
- * Utility class for file downloads and OS detection.
+ * Utility class for file downloads
  */
 public class Util {
 
@@ -109,8 +109,14 @@ public class Util {
         }
 
         File destination = new File(folder, filename);
+
+        if(destination.exists()){
+            progressCallback.accept(100);
+            return destination;
+        }
+
         System.out.println("Downloading " + url + " to " + destination.getAbsolutePath());
-        // --- Download ---
+
         try (InputStream in = conn.getInputStream();
              OutputStream out = new BufferedOutputStream(
                      Files.newOutputStream(destination.toPath()))) {
@@ -162,10 +168,10 @@ public class Util {
         return TranslationApi.getInstance().get(key);
     }
 
-    public static <T> Consumer<T> uiThrottle(Consumer<T> delegate) {
-        return throttle(delegate, 300);
-    }
 
+    /**
+     * throttle essentially adds debounce time to consumer calls. Prevents UI-update spam.
+     **/
     public static <T> Consumer<T> throttle(Consumer<T> delegate, long intervalMillis) {
         AtomicLong lastRun = new AtomicLong(0);
 
@@ -178,6 +184,10 @@ public class Util {
                 delegate.accept(value);
             }
         };
+    }
+
+    public static <T> Consumer<T> uiThrottle(Consumer<T> delegate) {
+        return throttle(delegate, 300);
     }
 
     public static boolean tryDelete(File f) {
