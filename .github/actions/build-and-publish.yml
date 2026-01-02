@@ -1,0 +1,92 @@
+name: Build and Publish
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            artifact_name: installer-linux
+            package_type: deb
+          - os: windows-latest
+            artifact_name: installer-windows
+            package_type: exe
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Build with Maven
+        run: mvn -B package --file pom.xml
+
+      - name: Prepare Package Directory
+        run: |
+          mkdir -p package/jar
+          cp installer/target/installer-1.0-SNAPSHOT.jar package/jar/
+
+      - name: Create Runtime Image (jlink)
+        run: |
+          jlink \
+            --module-path $JAVA_HOME/jmods \
+            --add-modules java.base,java.desktop,java.sql,java.xml,jdk.attach \
+            --output installer-runtime \
+            --strip-debug \
+            --compress 2 \
+            --no-header-files \
+            --no-man-pages
+
+      - name: Create Native Package (jpackage)
+        shell: bash
+        run: |
+          jpackage \
+            --name ByteAndBit-Installer \
+            --input package/jar \
+            --main-jar installer-1.0-SNAPSHOT.jar \
+            --main-class de.byteandbit.Installer \
+            --type ${{ matrix.package_type }} \
+            --runtime-image installer-runtime \
+            --dest output-package
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.artifact_name }}
+          path: |
+            output-package/*
+            installer/target/installer-1.0-SNAPSHOT.jar
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: release-artifacts
+          merge-multiple: true
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: v${{ github.run_number }}
+          name: Release v${{ github.run_number }}
+          files: |
+            release-artifacts/*.deb
+            release-artifacts/*.exe
+            release-artifacts/*.jar
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
