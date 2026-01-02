@@ -110,7 +110,7 @@ jobs:
           cd release-artifacts
           find . -name "*.bin" -exec mv {} ByteAndBit-Installer-b${{ github.run_number }}.bin \;
           find . -name "*.exe" -exec mv {} ByteAndBit-Installer-b${{ github.run_number }}.exe \;
-          find . -name "installer-*.jar" -exec mv {} ByteAndBit-Installer-b${{ github.run_number }}.jar \;
+          find . -name "*.jar" -exec mv {} ByteAndBit-Installer-b${{ github.run_number }}.jar \;
           ls -R
 
       - name: Create Release
