@@ -14,10 +14,10 @@ jobs:
         include:
           - os: ubuntu-latest
             artifact_name: installer-linux
-            package_type: deb
+            package_type: app-image
           - os: windows-latest
             artifact_name: installer-windows
-            package_type: exe
+            package_type: app-image
 
     steps:
       - uses: actions/checkout@v4
