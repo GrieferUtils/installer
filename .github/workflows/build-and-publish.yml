@@ -43,9 +43,10 @@ jobs:
           cp installer/target/installer-1.0-SNAPSHOT.jar package/jar/
 
       - name: Create Runtime Image (jlink)
+        shell: bash
         run: |
           jlink \
-            --module-path $JAVA_HOME/jmods \
+            --module-path "$JAVA_HOME/jmods" \
             --add-modules java.base,java.desktop,java.sql,java.xml,jdk.attach \
             --output installer-runtime \
             --strip-debug \
