@@ -86,6 +86,13 @@ jobs:
         with:
           path: release-artifacts
           merge-multiple: true
+      - name: Normalize Artifact Names
+        run: |
+          cd release-artifacts
+          find . -name "*.deb" -exec mv {} ByteAndBit-Installer-b${{ github.run_number }}.deb \;
+          find . -name "*.exe" -exec mv {} ByteAndBit-Installer-b${{ github.run_number }}.exe \;
+          find . -name "installer-*.jar" -exec mv {} ByteAndBit-Installer-b${{ github.run_number }}.jar \;
+          ls -R
 
       - name: Create Release
         uses: softprops/action-gh-release@v1
