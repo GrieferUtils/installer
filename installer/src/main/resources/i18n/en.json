@@ -31,5 +31,8 @@
   "RESTART_GAME": "Please restart your game. You may now close this window.",
   "FORGE_REQUIRED": "This instance has no Forge installed.",
   "DOWNLOADING_LICENSE": "Downloading license file...",
-  "INSTALLATION_FAILED_ERROR": "Installation failed. Please contact Support."
+  "INSTALLATION_FAILED_ERROR": "Installation failed. Please contact Support.",
+  "CLOCK_NOT_IN_SYNC_MESSAGE": "The system clock is not set correctly. This can lead to issues with the application. Please set the clock correctly to continue.",
+  "CLOCK_NOT_IN_SYNC_TITLE": "Please set your clock correctly",
+  "CHECKING_SYSTEM_TIME": "Checking system time..."
 }

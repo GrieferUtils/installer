@@ -30,5 +30,7 @@ public class Constants {
     public static final String LEGACY_SPINOSAURUS_IDENTIFIER = "legacy_spinosaurus"; // identifier to legacy spino, which is not supported
     public static final String LICENSE_PREFIX = "LION-";
     public static final int MAX_LICENSE_LENGTH = 35;
+    public static final String CLOCK_NTP_SERVER = "pool.ntp.org";
+    public static final long CLOCK_ACCEPTABLE_DEVIATION_MS = 5000;
 
 }

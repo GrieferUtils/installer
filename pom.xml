@@ -14,4 +14,11 @@
         <module>agent</module>
         <module>installer</module>
     </modules>
+    <dependencies>
+        <dependency>
+            <groupId>commons-net</groupId>
+            <artifactId>commons-net</artifactId>
+            <version>3.12.0</version>
+        </dependency>
+    </dependencies>
 </project>

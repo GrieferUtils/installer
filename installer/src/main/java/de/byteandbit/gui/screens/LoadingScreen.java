@@ -2,6 +2,7 @@ package de.byteandbit.gui.screens;
 
 import de.byteandbit.Constants;
 import de.byteandbit.api.AgentApi;
+import de.byteandbit.api.LocalClockApi;
 import de.byteandbit.api.TranslationApi;
 import de.byteandbit.gui.Gui;
 
@@ -88,6 +89,10 @@ public class LoadingScreen implements Screen {
             updateStatus(uiText("PETTING_DINOSAUR"));
             ui_wait();
             ui_wait();
+            updateStatus(uiText("CHECKING_SYSTEM_TIME"));
+            while(!LocalClockApi.is_clock_in_sync()){
+                JOptionPane.showMessageDialog(panel, uiText("CLOCK_NOT_IN_SYNC_MESSAGE"), uiText("CLOCK_NOT_IN_SYNC_TITLE"), JOptionPane.WARNING_MESSAGE);
+            }
             updateStatus(uiText("SETUP_DEPENDENCIES"));
             ui_wait();
             try {
