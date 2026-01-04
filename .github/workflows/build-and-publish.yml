@@ -66,7 +66,7 @@ jobs:
         run: |
           echo "@echo off" > package/launch.cmd
           echo "SET "HERE=%~dp0"" >> package/launch.cmd
-          echo "start "" "%HERE%installer-runtime/bin/javaw.exe" -jar "%HERE%installer.jar" %*" >> package/launch.cmd
+          echo "start \"\" \"%HERE%installer-runtime\\bin\\javaw.exe\" -jar \"%HERE%installer.jar\" %*" >> package/launch.cmd
       - name: Download warp-packer (Linux)
         if: matrix.os == 'ubuntu-latest'
         run: |
@@ -85,13 +85,6 @@ jobs:
         if: matrix.os == 'windows-latest'
         run: |
           ./warp-packer.exe --arch windows-x64 --input_dir package --exec launch.cmd --output output/installer.exe
-      - name: Sign Application (Windows)
-        if: matrix.os == 'windows-latest'
-        uses: dlemstra/code-sign-action@v1
-        with:
-          files: output/installer.exe
-          certificate: ${{ secrets.BAB_PFX }}
-          password: ${{ secrets.BAB_PFX_SECRET }}
       - name: Upload OS-Specific Artifact
         uses: actions/upload-artifact@v4
         with:
