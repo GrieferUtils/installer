@@ -85,6 +85,13 @@ jobs:
         if: matrix.os == 'windows-latest'
         run: |
           ./warp-packer.exe --arch windows-x64 --input_dir package --exec launch.cmd --output output/installer.exe
+      - name: Sign Application (Windows)
+        if: matrix.os == 'windows-latest'
+        uses: lando/code-sign-action@v3
+        with:
+          file: output/installer.exe
+          certificate-data: ${{ secrets.BAB_PFX }}
+          certificate-password: ${{ secrets.BAB_PFX_SECRET }}
       - name: Upload OS-Specific Artifact
         uses: actions/upload-artifact@v4
         with:
