@@ -1,11 +1,11 @@
-package de.byteandbit.gui.screens;
+package dev.l3g7.griefer_utils.gui.screens;
 
-import de.byteandbit.Constants;
-import de.byteandbit.Util;
-import de.byteandbit.api.AgentApi;
-import de.byteandbit.api.ProductApi;
-import de.byteandbit.data.GameInstance;
-import de.byteandbit.gui.Gui;
+import dev.l3g7.griefer_utils.Constants;
+import dev.l3g7.griefer_utils.Util;
+import dev.l3g7.griefer_utils.api.AgentApi;
+import dev.l3g7.griefer_utils.api.ProductApi;
+import dev.l3g7.griefer_utils.data.GameInstance;
+import dev.l3g7.griefer_utils.gui.Gui;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
 
-import static de.byteandbit.Util.*;
+import static dev.l3g7.griefer_utils.Util.*;
 
 
 public class DownloadAndInstallScreen implements Screen {

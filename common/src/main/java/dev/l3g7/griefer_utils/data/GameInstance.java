@@ -1,4 +1,4 @@
-package de.byteandbit.data;
+package dev.l3g7.griefer_utils.data;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;

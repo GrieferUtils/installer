@@ -1,17 +1,17 @@
-package de.byteandbit.api;
+package dev.l3g7.griefer_utils.api;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import de.byteandbit.Constants;
-import de.byteandbit.data.GameInstance;
-import de.byteandbit.data.License;
+import dev.l3g7.griefer_utils.Constants;
+import dev.l3g7.griefer_utils.data.GameInstance;
+import dev.l3g7.griefer_utils.data.License;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
-import static de.byteandbit.Util.getJsonResponse;
+import static dev.l3g7.griefer_utils.Util.getJsonResponse;
 
 /**
  * API responsible for download links.

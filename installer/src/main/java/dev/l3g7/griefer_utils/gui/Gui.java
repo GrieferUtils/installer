@@ -1,8 +1,8 @@
-package de.byteandbit.gui;
+package dev.l3g7.griefer_utils.gui;
 
-import de.byteandbit.Constants;
-import de.byteandbit.gui.screens.LoadingScreen;
-import de.byteandbit.gui.screens.Screen;
+import dev.l3g7.griefer_utils.Constants;
+import dev.l3g7.griefer_utils.gui.screens.LoadingScreen;
+import dev.l3g7.griefer_utils.gui.screens.Screen;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;

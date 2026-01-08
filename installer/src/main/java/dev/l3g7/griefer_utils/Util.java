@@ -1,7 +1,7 @@
-package de.byteandbit;
+package dev.l3g7.griefer_utils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import de.byteandbit.api.TranslationApi;
+import dev.l3g7.griefer_utils.api.TranslationApi;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -15,7 +15,7 @@ import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static de.byteandbit.Constants.UI_ARTIFICIAL_DELAY_MS;
+import static dev.l3g7.griefer_utils.Constants.UI_ARTIFICIAL_DELAY_MS;
 
 /**
  * Utility class for file downloads

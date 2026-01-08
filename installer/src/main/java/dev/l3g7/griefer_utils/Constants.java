@@ -1,4 +1,4 @@
-package de.byteandbit;
+package dev.l3g7.griefer_utils;
 
 import java.awt.*;
 import java.net.URL;

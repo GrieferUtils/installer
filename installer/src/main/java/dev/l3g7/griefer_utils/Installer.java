@@ -1,7 +1,7 @@
-package de.byteandbit;
+package dev.l3g7.griefer_utils;
 
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
-import de.byteandbit.gui.Gui;
+import dev.l3g7.griefer_utils.gui.Gui;
 
 import javax.swing.*;
 

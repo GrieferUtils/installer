@@ -1,10 +1,10 @@
-package de.byteandbit.gui.screens;
+package dev.l3g7.griefer_utils.gui.screens;
 
-import de.byteandbit.Constants;
-import de.byteandbit.api.AgentApi;
-import de.byteandbit.api.LocalClockApi;
-import de.byteandbit.api.TranslationApi;
-import de.byteandbit.gui.Gui;
+import dev.l3g7.griefer_utils.Constants;
+import dev.l3g7.griefer_utils.api.AgentApi;
+import dev.l3g7.griefer_utils.api.LocalClockApi;
+import dev.l3g7.griefer_utils.api.TranslationApi;
+import dev.l3g7.griefer_utils.gui.Gui;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -13,8 +13,8 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
 
-import static de.byteandbit.Util.uiText;
-import static de.byteandbit.Util.ui_wait;
+import static dev.l3g7.griefer_utils.Util.uiText;
+import static dev.l3g7.griefer_utils.Util.ui_wait;
 
 /**
  * Loading screen with logo and status text.

@@ -1,4 +1,4 @@
-package de.byteandbit.gui.screens;
+package dev.l3g7.griefer_utils.gui.screens;
 
 import javax.swing.*;
 

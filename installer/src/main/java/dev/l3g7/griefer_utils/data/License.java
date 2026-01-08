@@ -1,4 +1,4 @@
-package de.byteandbit.data;
+package dev.l3g7.griefer_utils.data;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;

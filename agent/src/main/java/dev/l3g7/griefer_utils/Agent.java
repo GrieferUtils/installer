@@ -1,8 +1,8 @@
-package de.byteandbit;
+package dev.l3g7.griefer_utils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import de.byteandbit.data.CommonConstants;
-import de.byteandbit.data.GameInstance;
+import dev.l3g7.griefer_utils.data.CommonConstants;
+import dev.l3g7.griefer_utils.data.GameInstance;
 
 import java.io.File;
 import java.io.PrintWriter;

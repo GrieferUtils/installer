@@ -1,9 +1,9 @@
-package de.byteandbit.api;
+package dev.l3g7.griefer_utils.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.tools.attach.*;
-import de.byteandbit.data.CommonConstants;
-import de.byteandbit.data.GameInstance;
+import dev.l3g7.griefer_utils.data.CommonConstants;
+import dev.l3g7.griefer_utils.data.GameInstance;
 import lombok.Getter;
 
 import java.io.BufferedReader;
@@ -16,8 +16,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-import static de.byteandbit.Constants.AGENT;
-import static de.byteandbit.Util.extractResourceToTempFile;
+import static dev.l3g7.griefer_utils.Constants.AGENT;
+import static dev.l3g7.griefer_utils.Util.extractResourceToTempFile;
 
 /**
  * Api responsible for finding running minecraft instances and extracting their metadata.

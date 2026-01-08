@@ -48,7 +48,7 @@
                             <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
                         </manifest>
                         <manifestEntries>
-                            <Agent-Class>de.byteandbit.Agent</Agent-Class>
+                            <Agent-Class>dev.l3g7.griefer_utils.Agent</Agent-Class>
                         </manifestEntries>
                     </archive>
                 </configuration>

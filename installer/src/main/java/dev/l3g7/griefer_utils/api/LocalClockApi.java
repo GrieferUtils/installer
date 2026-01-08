@@ -1,6 +1,6 @@
-package de.byteandbit.api;
+package dev.l3g7.griefer_utils.api;
 
-import de.byteandbit.Constants;
+import dev.l3g7.griefer_utils.Constants;
 import org.apache.commons.net.ntp.NTPUDPClient;
 import org.apache.commons.net.ntp.TimeInfo;
 

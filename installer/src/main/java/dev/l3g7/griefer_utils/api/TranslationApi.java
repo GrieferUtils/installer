@@ -1,8 +1,8 @@
-package de.byteandbit.api;
+package dev.l3g7.griefer_utils.api;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import de.byteandbit.Constants;
+import dev.l3g7.griefer_utils.Constants;
 
 import java.io.InputStream;
 import java.util.HashMap;
