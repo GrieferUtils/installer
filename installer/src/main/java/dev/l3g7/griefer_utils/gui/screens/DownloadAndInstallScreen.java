@@ -107,7 +107,7 @@ public class DownloadAndInstallScreen implements Screen {
                 setMajorStatus(String.format(uiText("DOWNLOADING_ADDON"), ProductApi.getInstance().getProductName()));
                 setMinorStatus(uiText("GETTING_DOWNLOAD_LINK"));
                 ui_wait();
-                ProductApi.DownloadResponse downloadResponse = ProductApi.getInstance().getDownloadLink(selectedInstance, selecteScope);
+                ProductApi.DownloadResponse downloadResponse = ProductApi.getInstance().getDownloadLink(selectedInstance, true); // TOD
                 File modsFolder = new File(selectedInstance.getGameDir(), "mods");
                 File downloaded = Util.downloadFileToFolder(downloadResponse.link, modsFolder, Util.uiThrottle((percent) -> {
                     setMinorStatus(percent + "%");
@@ -115,14 +115,6 @@ public class DownloadAndInstallScreen implements Screen {
                 ui_wait();
 
                 String coreName = getCoreName(downloaded.getName());
-                setMajorStatus(uiText("DOWNLOADING_LICENSE"));
-                setMinorStatus("0%");
-                ui_wait();
-                File configFolder = new File(selectedInstance.getGameDir(), "config");
-                Util.downloadFileToFolder(ProductApi.getInstance().getLicenseDownloadUrl(), configFolder, Util.uiThrottle((percent) -> {
-                    setMinorStatus(percent + "%");
-                }));
-
                 setMajorStatus(uiText("CHECKING_FOR_OLD_VERSIONS"));
                 setMinorStatus("");
                 ArrayList<String> toRemove = new ArrayList<>();

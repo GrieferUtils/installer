@@ -19,8 +19,9 @@ public class Constants {
     public static final URL AGENT = Objects.requireNonNull(Constants.class.getClassLoader().getResource("agent.jar"));
     public static final String I18N_PATH = "/i18n/de.json";
 
-    public static final String PRODUCT_DOWNLOAD_URL = "https://lion-service.byteandbit.cloud/microservice/lionService/api/version/download/%s/%s/%s/latest-%s"; // key + product key + version + scope
-    public static final String LICENSE_DOWNLOAD_URL = "https://lion-service.byteandbit.cloud/microservice/lionService/api/license/download/%s/%s"; // key + userId
+    public static final String LATEST_VERSION_URL = "https://api.grieferutils.l3g7.dev/v6/latest_release/installer/";
+    public static final String STABLE_DOWNLOAD_URL = "https://github.com/L3g7/GrieferUtils/releases/download/v%s/griefer-utils-v%s.jar"; // version + version
+    public static final String BETA_DOWNLOAD_URL = "://api.grieferutils.l3g7.dev/v6/builds/beta/griefer-utils-v%s.jar"; // version
 
     public static final int UI_ARTIFICIAL_DELAY_MS = 500;
 
