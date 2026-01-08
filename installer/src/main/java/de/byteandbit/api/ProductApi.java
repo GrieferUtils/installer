@@ -14,7 +14,7 @@ import java.util.List;
 import static de.byteandbit.Util.getJsonResponse;
 
 /**
- * API responsible for BAB product license management and download links.
+ * API responsible for download links.
  */
 public class ProductApi {
     private static final ObjectMapper objectMapper = new ObjectMapper()
@@ -34,8 +34,8 @@ public class ProductApi {
         scope = scope.toLowerCase();
         String version = instance.getMcVersion();
         String[] version_parts = version.split("\\.");
-        String babVersion = version_parts[0] + version_parts[1];
-        String reqUrl = String.format(Constants.PRODUCT_DOWNLOAD_URL, license.getKey(), license.getProduct().getIdentifier().getKey(), babVersion, scope);
+        String guVersion = version_parts[0] + version_parts[1];
+        String reqUrl = String.format(Constants.PRODUCT_DOWNLOAD_URL, license.getKey(), license.getProduct().getIdentifier().getKey(), guVersion, scope);
         DownloadResponse res = getJsonResponse(reqUrl, DownloadResponse.class, objectMapper);
         downloadCache.put(key, res);
         return res;
@@ -54,46 +54,14 @@ public class ProductApi {
         }
     }
 
-    public void updateLicense() throws IOException {
-        this.license = this.fetchLicense(license.getKey());
-    }
-
-    private License fetchLicense(String licenseKey) throws IOException {
-        return getJsonResponse(String.format(Constants.LICENSE_CHECK_URL, licenseKey), License.class, objectMapper);
-    }
-
     public String getLicenseDownloadUrl() {
         if (this.license == null) return null;
         return String.format(Constants.LICENSE_DOWNLOAD_URL, this.license.getKey(), this.license.getOwner().getLink());
     }
 
-
-    public boolean setLicense(String licenseKey) {
-        try {
-            this.license = fetchLicense(licenseKey);
-            System.out.println(this.license);
-            return license.isActive();
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
     public String getProductName() {
         if (this.license == null) return null;
         return TranslationApi.getInstance().get(license.getProduct().getIdentifier().getTranslationKey());
-    }
-
-    public boolean noUsersRegistered() {
-        return this.license == null || this.license.getUsers().isEmpty();
-    }
-
-    public String getLicenseControlPanelUrl() {
-        return String.format(Constants.LICENSE_CONTROL_PANEL_URL, license.getId());
-    }
-
-    public boolean isLegacyLicense() {
-        return this.license.getProduct().getIdentifier().getKey().equals(Constants.LEGACY_SPINOSAURUS_IDENTIFIER);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)

@@ -17,7 +17,7 @@ public class Agent {
      * @param inst      reference to the instrumentation API.
      */
     public static void agentmain(String agentArgs, Instrumentation inst) {
-        System.out.println("ByteAndBit agent attached to JVM.");
+        System.out.println("GrieferUtils agent attached to JVM.");
         try {
             if (agentArgs.startsWith(CommonConstants.TEST_MC_KEY)) {
                 String rawArgs = agentArgs.substring(CommonConstants.TEST_MC_KEY.length() + CommonConstants.DELIMITER.length());
@@ -40,7 +40,7 @@ public class Agent {
     public static void testMC(String[] args) {
         int pid = Integer.parseInt(args[0]);
         int port = Integer.parseInt(args[1]);
-        String log = "Hello from ByteAndBit agent!\n";
+        String log = "Hello from GrieferUtils agent!\n";
         if (isMinecraft()) {
             GameInstance instance = new GameInstance(pid, gameDir(), mcVersion(), isForge());
             log += "This seems to be a minecraft instance. Details: " + instance;

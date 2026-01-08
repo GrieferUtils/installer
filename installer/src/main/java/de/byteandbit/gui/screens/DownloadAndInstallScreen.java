@@ -40,7 +40,7 @@ public class DownloadAndInstallScreen implements Screen {
         panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         try {
-            BufferedImage logo = ImageIO.read(Constants.BAB_LOGO);
+            BufferedImage logo = ImageIO.read(Constants.GU_LOGO);
             Rectangle screenSize = Constants.PROGRAM_GEOMETRY;
             int targetWidth = screenSize.width / 2;
             int targetHeight = screenSize.height / 2;

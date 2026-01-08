@@ -22,7 +22,7 @@ public class Gui extends JFrame {
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         try {
-            this.setIconImage(ImageIO.read(Constants.BAB_ICON));
+            this.setIconImage(ImageIO.read(Constants.GU_ICON));
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Could not load icon.");

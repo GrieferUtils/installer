@@ -1,4 +1,4 @@
-# BAB Installer
+# GrieferUtils Installer
 
 A specialized Java-based installer and discovery tool designed to find and interact with running Minecraft JVM instances.
 

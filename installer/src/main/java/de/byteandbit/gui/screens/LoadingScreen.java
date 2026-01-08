@@ -12,7 +12,6 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
-import java.util.Locale;
 
 import static de.byteandbit.Util.uiText;
 import static de.byteandbit.Util.ui_wait;
@@ -29,7 +28,7 @@ public class LoadingScreen implements Screen {
         panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         try {
-            BufferedImage logo = ImageIO.read(Constants.BAB_LOGO);
+            BufferedImage logo = ImageIO.read(Constants.GU_LOGO);
             Rectangle screenSize = Constants.PROGRAM_GEOMETRY;
             int targetWidth = screenSize.width / 2;
             int targetHeight = screenSize.height / 2;
@@ -70,8 +69,7 @@ public class LoadingScreen implements Screen {
 
     private void load() {
         new Thread(() -> {
-            String language = Locale.getDefault().getLanguage();
-            TranslationApi.getInstance().loadLocalLanguage(language);
+            TranslationApi.getInstance().loadLocalLanguage();
             updateStatus(uiText("CHECKING_INTERNET_CONNECTION"));
             ui_wait();
             try {
@@ -79,16 +77,6 @@ public class LoadingScreen implements Screen {
             } catch (Exception e) {
                 Gui.getInstance().errorAndExit(uiText("NO_GITHUB_ERROR"), e);
             }
-            updateStatus(uiText("DOWNLOADING_TRANSLATIONS"));
-            ui_wait();
-            try {
-                TranslationApi.getInstance().loadRemoteLanguage(language);
-            } catch (IOException e) {
-                Gui.getInstance().errorAndExit(uiText("NO_TRANSLATIONS_ERROR"), e);
-            }
-            updateStatus(uiText("PETTING_DINOSAUR"));
-            ui_wait();
-            ui_wait();
             updateStatus(uiText("CHECKING_SYSTEM_TIME"));
             while(!LocalClockApi.is_clock_in_sync()){
                 JOptionPane.showMessageDialog(panel, uiText("CLOCK_NOT_IN_SYNC_MESSAGE"), uiText("CLOCK_NOT_IN_SYNC_TITLE"), JOptionPane.WARNING_MESSAGE);
@@ -102,7 +90,7 @@ public class LoadingScreen implements Screen {
             }
             updateStatus(uiText("SETUP_COMPLETE"));
             ui_wait();
-            Gui.getInstance().showScreen(new LegalScreen());
+            Gui.getInstance().showScreen(new GameSelectScreen());
         }).start();
     }
 

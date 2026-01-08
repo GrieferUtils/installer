@@ -83,8 +83,8 @@ jobs:
         uses: dlemstra/code-sign-action@v1
         with:
           files: output/installer.exe
-          certificate: ${{ secrets.BAB_PFX }}
-          password: ${{ secrets.BAB_PFX_SECRET }}
+          certificate: ${{ secrets.GU_PFX }}
+          password: ${{ secrets.GU_PFX_SECRET }}
       - name: Upload OS-Specific Artifact
         uses: actions/upload-artifact@v4
         with:
@@ -108,9 +108,9 @@ jobs:
       - name: Normalize Artifact Names
         run: |
           cd release-artifacts
-          find . -name "*.bin" -exec mv {} ByteAndBit-Installer-b${{ github.run_number }}.bin \;
-          find . -name "*.exe" -exec mv {} ByteAndBit-Installer-b${{ github.run_number }}.exe \;
-          find . -name "*.jar" -exec mv {} ByteAndBit-Installer-b${{ github.run_number }}.jar \;
+          find . -name "*.bin" -exec mv {} GrieferUtils-Installer-b${{ github.run_number }}.bin \;
+          find . -name "*.exe" -exec mv {} GrieferUtils-Installer-b${{ github.run_number }}.exe \;
+          find . -name "*.jar" -exec mv {} GrieferUtils-Installer-b${{ github.run_number }}.jar \;
           ls -R
 
       - name: Create Release

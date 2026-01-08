@@ -74,7 +74,7 @@ public class Util {
 
         HttpURLConnection conn = (HttpURLConnection) new URL(url).openConnection();
         conn.setInstanceFollowRedirects(true);
-        conn.setRequestProperty("User-Agent", "BAB-Installer");
+        conn.setRequestProperty("User-Agent", "GrieferUtils-Installer");
 
         int status = conn.getResponseCode();
         if (status >= 400) {
