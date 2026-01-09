@@ -187,7 +187,7 @@ public class Util {
     }
 
     public static <T> Consumer<T> uiThrottle(Consumer<T> delegate) {
-        return throttle(delegate, 300);
+        return throttle(delegate, 100);
     }
 
     public static boolean tryDelete(File f) {

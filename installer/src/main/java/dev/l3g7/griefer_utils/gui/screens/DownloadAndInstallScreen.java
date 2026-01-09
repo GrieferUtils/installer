@@ -13,6 +13,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -108,37 +109,17 @@ public class DownloadAndInstallScreen implements Screen {
                 setMinorStatus(uiText("GETTING_DOWNLOAD_LINK"));
                 ui_wait();
                 String downloadLink = ProductApi.getInstance().getDownloadLink(selecteScope);
-                File modsFolder = new File(selectedInstance.getGameDir(), "mods");
-                File downloaded = Util.downloadFileToFolder(downloadLink, modsFolder, Util.uiThrottle((percent) -> {
+                Path targetFolder;
+                if (selectedInstance.getLabyVersion() == 3) {
+                    targetFolder = Path.of(selectedInstance.getGameDir(), "LabyMod", "addons-1.8");
+                } else // 4
+                    targetFolder = Path.of(selectedInstance.getGameDir(), "labymod-neo", "addons");
+
+                Util.downloadFileToFolder(downloadLink, targetFolder.toFile(), Util.uiThrottle((percent) -> {
                     setMinorStatus(percent + "%");
                 }));
                 ui_wait();
 
-                String coreName = getCoreName(downloaded.getName());
-                setMajorStatus(uiText("CHECKING_FOR_OLD_VERSIONS"));
-                setMinorStatus("");
-                ArrayList<String> toRemove = new ArrayList<>();
-
-                for (File f : Objects.requireNonNull(modsFolder.listFiles())) {
-                    if (f.getName().equals(downloaded.getName())) continue;
-                    if (getCoreName(f.getName()).equals(coreName)) {
-                        toRemove.add(f.getAbsolutePath());
-                        setMinorStatus(String.format(uiText("FOUND_OLD_VERSION"), f.getName()));
-                        if (!tryDelete(f)) toRemove.add(f.getAbsolutePath());
-                        ui_wait();
-                        ui_wait();
-                    }
-                }
-                if (!toRemove.isEmpty()) {
-                    setMinorStatus("");
-                    setMajorStatus(uiText("CLEANUP_OLD_VERSIONS"));
-                    ui_wait();
-
-                    try {
-                        AgentApi.attach_addFileDeleteHooks(selectedInstance.getPid(), toRemove);
-                    } catch (Exception ignored) {
-                    } // this will always report that it didnt manage to attach for some reason.
-                }
                 setMajorStatus(uiText("INSTALLATION_COMPLETE"));
                 setMinorStatus(uiText("RESTART_GAME"));
             } catch (IOException e) {

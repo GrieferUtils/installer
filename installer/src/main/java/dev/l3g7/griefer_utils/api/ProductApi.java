@@ -43,7 +43,7 @@ public class ProductApi {
     }
 
     public boolean canInstallFor(GameInstance instance) {
-        return instance.getMcVersion().equalsIgnoreCase("1.8.9");
+        return instance.getMcVersion().equalsIgnoreCase("1.8.9") && instance.getLabyVersion() != -1;
     }
 
     public String getProductName() {
