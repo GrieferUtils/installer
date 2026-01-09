@@ -78,13 +78,6 @@ jobs:
         if: matrix.os == 'windows-latest'
         run: |
           ./warp-packer.exe --arch windows-x64 --input-dir package --exec installer-runtime/bin/javaw.exe --exec-args "-jar installer.jar" --output output/installer.exe
-      - name: Sign Application (Windows)
-        if: matrix.os == 'windows-latest'
-        uses: dlemstra/code-sign-action@v1
-        with:
-          files: output/installer.exe
-          certificate: ${{ secrets.GU_PFX }}
-          password: ${{ secrets.GU_PFX_SECRET }}
       - name: Upload OS-Specific Artifact
         uses: actions/upload-artifact@v4
         with:
