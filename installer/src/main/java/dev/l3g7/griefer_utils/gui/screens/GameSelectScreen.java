@@ -49,7 +49,7 @@ public class GameSelectScreen implements Screen {
             public void setSelectionInterval(int index0, int index1) {
                 if (index0 == index1) {
                     GameInstance instance = agentApi.getGameInstances().get(index0);
-                    if (!ProductApi.getInstance().canInstallFor(instance, selectedScope) || !instance.isForge()) {
+                    if (!ProductApi.getInstance().canInstallFor(instance) || instance.getLabyVersion() == -1) {
                         return; // block selection
                     }
                 }
@@ -76,7 +76,7 @@ public class GameSelectScreen implements Screen {
 
         // Scope dropdown panel (rightmost)
         JPanel scopePanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
-        JLabel scopeLabel = new JLabel("Scope ");
+        JLabel scopeLabel = new JLabel("Channel: ");
         scopeComboBox = new JComboBox<>();
         scopeComboBox.addActionListener(e -> onScopeChanged());
         scopePanel.add(scopeLabel);
@@ -142,7 +142,7 @@ public class GameSelectScreen implements Screen {
             return false;
         }
         GameInstance instance = agentApi.getGameInstances().get(index);
-        return ProductApi.getInstance().canInstallFor(instance, selectedScope);
+        return ProductApi.getInstance().canInstallFor(instance);
     }
 
     private void updateGameList() {
@@ -152,7 +152,7 @@ public class GameSelectScreen implements Screen {
         for (GameInstance instance : agentApi.getGameInstances()) {
             String displayText = String.format("Minecraft %s (%s) at %s",
                     instance.getMcVersion(),
-                    instance.isForge() ? "Forge" : "Vanilla",
+                    instance.getLabyVersion() == -1 ? "Kein LabyMod" : "LabyMod " + instance.getLabyVersion(),
                     instance.getGameDir());
             listModel.addElement(displayText);
         }
@@ -209,17 +209,17 @@ public class GameSelectScreen implements Screen {
             List<GameInstance> instances = agentApi.getGameInstances();
             if (index >= 0 && index < instances.size()) {
                 GameInstance instance = instances.get(index);
-                boolean canInstall = ProductApi.getInstance().canInstallFor(instance, selectedScope);
+                boolean canInstall = ProductApi.getInstance().canInstallFor(instance);
 
                 if (canInstall) {
-                    if (instance.isForge()) {
+                    if (instance.getLabyVersion() != -1) {
                         label.setEnabled(true);
                         label.setForeground(list.getForeground());
                         label.setToolTipText(null);
                     } else {
                         label.setEnabled(false);
                         label.setForeground(Color.GRAY);
-                        label.setToolTipText(uiText("FORGE_REQUIRED"));
+                        label.setToolTipText(uiText("LABYMOD_REQUIRED"));
                     }
                 } else {
                     label.setEnabled(false);

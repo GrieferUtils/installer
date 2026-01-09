@@ -1,4 +1,7 @@
 {
+  "NO_GAMES_FOUND": "Keine Spielinstanzen gefunden. Bitte starte Minecraft.",
+  "LABYMOD_REQUIRED": "Diese Instanz hat kein LabyMod installiert.",
+
   "CHECKING_INTERNET_CONNECTION": "Internetverbindung wird geprüft...",
   "DOWNLOADING_TRANSLATIONS": "Übersetzungen werden heruntergeladen...",
   "SETUP_DEPENDENCIES": "Abhängigkeiten einrichten...",
@@ -7,7 +10,6 @@
   "PETTING_DINOSAUR": "Dinos werden gestreichelt...",
   "INSTALL": "Hier installieren",
   "SCANNING_FOR_GAMES": "Suche nach Spielinstanzen...",
-  "NO_GAMES_FOUND": "Keine Spielinstanzen gefunden. Bitte starte Minecraft (Forge).",
   "NO_GITHUB_ERROR": "GitHub.com konnte nicht erreicht werden.",
   "NO_TRANSLATIONS_ERROR": "Sprachdateien konnten nicht heruntergeladen werden.",
   "NO_DEPENDENCIES_ERROR": "Abhängigkeiten konnten nicht heruntergeladen werden.",
@@ -28,7 +30,6 @@
   "CLEANUP_OLD_VERSIONS": "Alte Versionen werden bereinigt...",
   "INSTALLATION_COMPLETE": "Installation abgeschlossen!",
   "RESTART_GAME": "Bitte starte das Spiel neu. Du kannst dieses Fenster jetzt schließen.",
-  "FORGE_REQUIRED": "Diese Instanz hat kein Forge installiert.",
   "DOWNLOADING_LICENSE": "Lizenzdatei wird heruntergeladen...",
   "INSTALLATION_FAILED_ERROR": "Installation fehlgeschlagen. Bitte kontaktiere den Support.",
   "CLOCK_NOT_IN_SYNC_MESSAGE": "Die Systemzeit ist nicht korrekt eingestellt. Dies kann zu Problemen mit der Anwendung führen. Bitte korrigiere die Uhrzeit, um fortzufahren.",

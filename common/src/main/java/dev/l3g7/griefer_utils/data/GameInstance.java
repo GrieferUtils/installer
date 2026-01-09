@@ -13,5 +13,5 @@ public class GameInstance {
     int pid;
     String gameDir;
     String mcVersion;
-    boolean isForge;
+    int labyVersion;
 }

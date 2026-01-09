@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import dev.l3g7.griefer_utils.Constants;
+import dev.l3g7.griefer_utils.api.ProductApi.LatestVersionResponse.Version;
 import dev.l3g7.griefer_utils.data.GameInstance;
 
 import java.io.IOException;
@@ -24,25 +25,25 @@ public class ProductApi {
         return INSTANCE;
     }
 
-    public DownloadResponse getDownloadLink(GameInstance instance, boolean beta) throws IOException {
-        String version = instance.getMcVersion();
-        String[] version_parts = version.split("\\.");
-        String guVersion = version_parts[0] + version_parts[1];
-        String reqUrl = String.format(Constants.STABLE_DOWNLOAD_URL, guVersion, guVersion);
-        return getJsonResponse(reqUrl, DownloadResponse.class, objectMapper);
-    }
+    public String getDownloadLink(String scope) throws IOException {
+        // Fetch latest version
+	    LatestVersionResponse res = getJsonResponse(Constants.LATEST_VERSION_URL, LatestVersionResponse.class, objectMapper);
+        Version version = scope.equalsIgnoreCase("beta") ? res.getBeta() : res.getStable();
+        String guVersion = version.version;
 
+        return switch (scope.toLowerCase()) {
+            case "beta" -> String.format(Constants.BETA_DOWNLOAD_URL, guVersion);
+            case "stable", "stabil" -> String.format(Constants.STABLE_DOWNLOAD_URL, guVersion, guVersion);
+            default -> throw new IllegalStateException("Unexpected scope " + scope);
+        };
+    }
 
     public List<String> getAvailableScopes() {
         return List.of("Stabil", "Beta");
     }
 
-    public boolean canInstallFor(GameInstance instance, String scope) {
-        try {
-            return getDownloadLink(instance, true).success; // TODO beta: true
-        } catch (Exception e) {
-            return false;
-        }
+    public boolean canInstallFor(GameInstance instance) {
+        return instance.getMcVersion().equalsIgnoreCase("1.8.9");
     }
 
     public String getProductName() {
@@ -51,10 +52,14 @@ public class ProductApi {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     @lombok.Data
-    public static class DownloadResponse {
-        public boolean success;
+    public static class LatestVersionResponse {
+        public Version stable;
+        public Version beta;
 
-        @com.fasterxml.jackson.annotation.JsonProperty()
-        public String link = "no-link-provided";
+        @JsonIgnoreProperties(ignoreUnknown = true)
+        @lombok.Data
+        public static class Version {
+            public String version;
+        }
     }
 }

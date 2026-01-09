@@ -21,7 +21,7 @@ public class Constants {
 
     public static final String LATEST_VERSION_URL = "https://api.grieferutils.l3g7.dev/v6/latest_release/installer/";
     public static final String STABLE_DOWNLOAD_URL = "https://github.com/L3g7/GrieferUtils/releases/download/v%s/griefer-utils-v%s.jar"; // version + version
-    public static final String BETA_DOWNLOAD_URL = "://api.grieferutils.l3g7.dev/v6/builds/beta/griefer-utils-v%s.jar"; // version
+    public static final String BETA_DOWNLOAD_URL = "https://api.grieferutils.l3g7.dev/v6/builds/beta/griefer-utils-v%s.jar"; // version
 
     public static final int UI_ARTIFICIAL_DELAY_MS = 500;
 

@@ -42,9 +42,15 @@ public class Agent {
         int port = Integer.parseInt(args[1]);
         String log = "Hello from GrieferUtils agent!\n";
         if (isMinecraft()) {
-            GameInstance instance = new GameInstance(pid, gameDir(), mcVersion(), isForge());
-            log += "This seems to be a minecraft instance. Details: " + instance;
-            post(port, instance);
+            if (labyMcVersion() != null) {
+                GameInstance instance = new GameInstance(pid, gameDir(), labyMcVersion(), 4);
+                log += "This seems to be a labymod 4 instance. Details: " + instance;
+                post(port, instance);
+            } else {
+                GameInstance instance = new GameInstance(pid, gameDir(), mcVersion(), isLaby3() ? 3 : -1);
+                log += "This seems to be a minecraft instance. Details: " + instance;
+                post(port, instance);
+            }
         } else {
             log += "This doesnt seem to be a minecraft instance.";
         }
@@ -61,19 +67,42 @@ public class Agent {
             }
         } catch (Exception ignored) {
         }
+
+        try {
+            return (String) Class.forName("net.labymod.main.Source")
+                    .getDeclaredField("ABOUT_MC_VERSION")
+                    .get(null);
+        } catch (Exception ignored) {
+        }
+
         return "unknown";
     }
 
-    public static boolean isForge() {
-        for (String key : System.getProperties().stringPropertyNames()) {
-            if (key.startsWith("fml.") || key.startsWith("forge.")) return true;
-        }
+    public static String labyMcVersion() {
+        if (System.getProperties().get("net.labymod.running-version") != null)
+            return System.getProperties().get("net.labymod.running-version").toString();
+
+        return null;
+    }
+
+    public static boolean isLaby3() {
+        // Check direct LabyMod
         try {
-            Class.forName("net.minecraftforge.fml.common.Loader", false,
+            Class.forName("net.labymod.main.LabyMod", false,
                     ClassLoader.getSystemClassLoader());
             return true;
         } catch (ClassNotFoundException ignored) {
         }
+
+        // Check wrapped LabyMod
+        try {
+            Class<?> launch = Class.forName("net.minecraft.launchwrapper.Launch", false, ClassLoader.getSystemClassLoader());
+            ClassLoader cl = (ClassLoader) launch.getDeclaredField("classLoader").get(null);
+            Class.forName("net.labymod.main.LabyMod", false, cl);
+            return true;
+        } catch (Exception ignored) {
+        }
+
         return false;
     }
 

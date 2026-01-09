@@ -107,9 +107,9 @@ public class DownloadAndInstallScreen implements Screen {
                 setMajorStatus(String.format(uiText("DOWNLOADING_ADDON"), ProductApi.getInstance().getProductName()));
                 setMinorStatus(uiText("GETTING_DOWNLOAD_LINK"));
                 ui_wait();
-                ProductApi.DownloadResponse downloadResponse = ProductApi.getInstance().getDownloadLink(selectedInstance, true); // TOD
+                String downloadLink = ProductApi.getInstance().getDownloadLink(selecteScope);
                 File modsFolder = new File(selectedInstance.getGameDir(), "mods");
-                File downloaded = Util.downloadFileToFolder(downloadResponse.link, modsFolder, Util.uiThrottle((percent) -> {
+                File downloaded = Util.downloadFileToFolder(downloadLink, modsFolder, Util.uiThrottle((percent) -> {
                     setMinorStatus(percent + "%");
                 }));
                 ui_wait();
