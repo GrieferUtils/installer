@@ -101,8 +101,8 @@ jobs:
       - name: Normalize Artifact Names
         run: |
           cd release-artifacts
-          find . -name "*.bin" -exec mv {} GrieferUtils-Installer-b${{ github.run_number }}.bin \;
-          find . -name "*.exe" -exec mv {} GrieferUtils-Installer-b${{ github.run_number }}.exe \;
+          find . -name "*.bin" -exec mv {} GrieferUtils-Installer-Linux-x64-b${{ github.run_number }}.bin \;
+          find . -name "*.exe" -exec mv {} GrieferUtils-Installer-Windows-x64-b${{ github.run_number }}.exe \;
           find . -name "*.jar" -exec mv {} GrieferUtils-Installer-b${{ github.run_number }}.jar \;
           ls -R
 
