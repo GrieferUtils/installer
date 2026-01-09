@@ -30,3 +30,6 @@ To build the entire project, including the agent and the installer, run the foll
 ```bash
 mvn clean install
 ```
+
+## Licensing
+An exception to the NoDerivatives clause has been explicitly granted to GrieferUtils according to Section 2a § 2.
