@@ -18,7 +18,7 @@ public class Constants {
     public static final URL BAB_ICON = Objects.requireNonNull(Constants.class.getClassLoader().getResource("bab_icon.png"));
     public static final URL AGENT = Objects.requireNonNull(Constants.class.getClassLoader().getResource("agent.jar"));
     public static final String i18nPathLocal = "/i18n/%s.json";
-    public static final String i18nPathRemote = "https://i18n-data.nbg1.your-objectstorage.com/%s.json"; // language code
+    public static final String i18nPathRemote = "https://i18n-data.fra1.cdn.digitaloceanspaces.com/%s.json"; // language code
 
     public static final String LICENSE_CHECK_URL = "https://lion-service.byteandbit.cloud/microservice/lionService/api/license/fetch/%s";
     public static final String LICENSE_CONTROL_PANEL_URL = "https://ccp.byteandbit.studio/home/user-data/license/edit/%s"; // licence internal id
