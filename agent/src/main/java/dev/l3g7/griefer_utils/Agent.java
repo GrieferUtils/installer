@@ -124,7 +124,7 @@ public class Agent {
     public static void post(int port, GameInstance gameInstance) {
         try {
             String json = new ObjectMapper().writeValueAsString(gameInstance);
-            try (Socket socket = new Socket("localhost", port);
+            try (Socket socket = new Socket("127.0.0.1", port);
                  PrintWriter out = new PrintWriter(socket.getOutputStream(), true)) {
                 out.print(json);
                 out.flush();
