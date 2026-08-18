@@ -14,7 +14,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import static dev.l3g7.griefer_utils.Constants.COMMUNICATION_PORT;
 import static dev.l3g7.griefer_utils.Util.uiText;
 
 
@@ -104,7 +103,7 @@ public class GameSelectScreen implements Screen {
 
     public void load() {
         try {
-            agentApi = new AgentApi(COMMUNICATION_PORT);
+            agentApi = new AgentApi();
 
             // Initialize scope dropdown
             List<String> scopes = ProductApi.getInstance().getAvailableScopes();

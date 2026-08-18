@@ -31,8 +31,7 @@ public class AgentApi implements AutoCloseable {
     private boolean running = true;
     private int port;
 
-    public AgentApi(int port) throws IOException {
-        this.port = port;
+    public AgentApi() throws IOException {
         start_agent_communication();
     }
 
@@ -90,7 +89,8 @@ public class AgentApi implements AutoCloseable {
     private void start_agent_communication() {
         new Thread(() -> {
             try {
-                agentCommunicationServer = new ServerSocket(port);
+                agentCommunicationServer = new ServerSocket(0);
+				this.port = agentCommunicationServer.getLocalPort();
                 ObjectMapper mapper = new ObjectMapper();
 
                 while (running) {

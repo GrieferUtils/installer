@@ -11,7 +11,6 @@ public class Constants {
 
     public static final String PROGRAM_TITLE = "GrieferUtils-Installer";
 
-    public static final int COMMUNICATION_PORT = 61320;
     public static final int JVM_SEARCH_INTERVAL_MS = 1000;
     public static final Rectangle PROGRAM_GEOMETRY = new Rectangle(500, 300);
     public static final URL GU_LOGO = Objects.requireNonNull(Constants.class.getClassLoader().getResource("gu_logo.png"));
